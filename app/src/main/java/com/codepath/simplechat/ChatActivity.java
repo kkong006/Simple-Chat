@@ -35,6 +35,7 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView rvChat;
     ArrayList<Message> mMessages;
     ChatAdapter mAdapter;
+
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
 
@@ -79,28 +80,25 @@ public class ChatActivity extends AppCompatActivity {
 
         // Listen for CREATE events
         subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, new SubscriptionHandling.HandleEventCallback<Message>() {
-                @Override
-                public void onEvent(ParseQuery<Message> query, Message object) {
-                    mMessages.add(0, object);
+            @Override
+            public void onEvent(ParseQuery<Message> query, Message object) {
+                mMessages.add(0, object);
 
-                    // RecyclerView updates need to be run on the UI thread
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAdapter.notifyDataSetChanged();
-                            rvChat.scrollToPosition(0);
-                        }
-                    });
-                }
+                // RecyclerView updates need to be run on the UI thread
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.notifyDataSetChanged();
+                        rvChat.scrollToPosition(0);
+                    }
+                });
+            }
         });
     }
-
-
 
     // Get the userId from the cached currentUser object
     void startWithCurrentUser() {
         setupMessagePosting();
-
     }
 
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
@@ -187,5 +185,4 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
 }
